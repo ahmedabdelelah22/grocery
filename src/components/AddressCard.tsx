@@ -10,7 +10,6 @@ interface AddressCardProps {
 
 const AddressCard = ({addr,onEditHandler,setAddresses} :AddressCardProps) => {
     const handleDelete = async (id: string) => {
-        // TODO: call your delete-address API here before updating local state
         setAddresses((prev) => prev.filter((a) => a._id !== id));
     }
   return (

@@ -1,4 +1,4 @@
-const FilterPanel = ({categories,category ,organic,minPrice , maxPrice,updateFilter,clearFilters,hasFilters}:any) => {
+const FilterPanel = ({categories,category ,minPrice , maxPrice,updateFilter,clearFilters,hasFilters}:any) => {
     const categoriesWithAll = [{slug:"",name: "All Categories"},...categories]
   return (
     <div className="space-y-6">

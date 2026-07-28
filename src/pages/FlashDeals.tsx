@@ -3,7 +3,6 @@ import type { Product } from "../types"
 import { dummyProducts } from "../assets/assets";
 import { Zap } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-import { FcClearFilters } from "react-icons/fc";
 import Loading from "../components/Home/Loading";
 
 const FlashDeals = () => {
