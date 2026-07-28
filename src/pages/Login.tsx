@@ -9,7 +9,7 @@ const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [name, setName] = useState("");
 const [isLogin, setIsLogin] = useState(true);
-const [isLoading, setIsLoading] = useState(false);
+const [isLoading] = useState(false);
 const navgiate= useNavigate()
 
 const handleSubmit:React.FormEventHandler<HTMLFormElement> = (e) => {

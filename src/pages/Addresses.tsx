@@ -10,7 +10,7 @@ const Addresses = () => {
   const [addresses , setAddresses] = useState<Address[]>([])
   const [loading , setLoading ] = useState(true);
   const [showForm , setShowForm ]= useState(false);
-  const [editingId , setEditingId] = useState<string | null >(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [form , setForm ] = useState({
     label: "",
     address:"",
