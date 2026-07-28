@@ -33,8 +33,26 @@ const Addresses = () => {
   setEditingId(null);
   }
 
-  const handleSubmit = async (e:React.SubmitEvent)=>{
-    e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (editingId) {
+      // TODO: call your update-address API here before updating local state
+      setAddresses((prev) =>
+        prev.map((a) => (a._id === editingId ? { ...a, ...form } : a))
+      );
+    } else {
+      // TODO: call your create-address API here and use the real returned _id
+      const newAddress: Address = {
+        _id: crypto.randomUUID(),
+        lat: 0,
+        lng: 0,
+        ...form,
+      };
+      setAddresses((prev) => [...prev, newAddress]);
+    }
+
+    resetForm();
   }
 
   const onEditHandler = (add: Address)=> {
@@ -91,13 +109,7 @@ const Addresses = () => {
                   key={addr._id}
                   addr={addr}
                   onEditHandler={onEditHandler}
-                  setAddresses={(address: Address) =>
-                    setAddresses((currentAddresses) =>
-                      currentAddresses.filter(
-                        (currentAddress) => currentAddress._id !== address._id
-                      )
-                    )
-                  }
+                  setAddresses={setAddresses}
                 />
               ))
             }
