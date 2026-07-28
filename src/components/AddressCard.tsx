@@ -1,15 +1,17 @@
 import { CheckIcon, MapPinIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import type { Dispatch, SetStateAction } from "react";
 import type { Address } from "../types"
 
 interface AddressCardProps {
     addr: Address;
     onEditHandler: (addr : Address) => void;
-    setAddresses : (addresses:Address) => void;
+    setAddresses: Dispatch<SetStateAction<Address[]>>;
 }
 
 const AddressCard = ({addr,onEditHandler,setAddresses} :AddressCardProps) => {
     const handleDelete = async (id: string) => {
-        console.log(id)
+        // TODO: call your delete-address API here before updating local state
+        setAddresses((prev) => prev.filter((a) => a._id !== id));
     }
   return (
     <div key={addr._id} className="max-w-3xl bg-white rounded-2xl p-6 flex items-start justify-between">

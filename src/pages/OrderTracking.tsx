@@ -15,11 +15,15 @@ const OrderTracking = () => {
   const navigate = useNavigate();
   const [order , setOrder] = useState<Order | null>(null)
   const [loading ,setLoading] = useState(true)
-const [liveLocation, setLiveLocation] = useState<{lat: number; lng: number} | null>(null)
+  const [liveLocation, setLiveLocation] = useState<{lat: number; lng: number} | null>(null)
 
 
   useEffect(()=>{
-    setOrder(dummyDashboardOrdersData.find((o)=>o._id===id) as any )
+    const found = dummyDashboardOrdersData.find((o)=>o._id===id) as unknown as (Order & { liveLocation?: { lat: number; lng: number; updatedAt: string } }) | undefined;
+    setOrder(found ?? null)
+    if (found?.liveLocation) {
+      setLiveLocation({ lat: found.liveLocation.lat, lng: found.liveLocation.lng });
+    }
     setLoading(false)
   },[id,navigate])
   if(loading) return <Loading />
@@ -40,10 +44,10 @@ const [liveLocation, setLiveLocation] = useState<{lat: number; lng: number} | nu
         {/* order id , date , status */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-semibold text-app-green">Order #{order!._id.slice(-8).toUpperCase()}</h1>
+            <h1 className="text-2xl font-semibold text-app-green">Order #{order._id.slice(-8).toUpperCase()}</h1>
             <p className="text-sm text-app-text-light mt-1">
               
-               Placed on {new Date(order!.createdAt).toLocaleDateString("en-US", {
+               Placed on {new Date(order.createdAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
                           year: "numeric",
@@ -51,11 +55,11 @@ const [liveLocation, setLiveLocation] = useState<{lat: number; lng: number} | nu
             </p>
           </div>
           <span
-          className={`px-4 py-1.5 text-sm font-semibold rounded-full ${order!.status === "Delivered" ?
-            "bg-green-100 text-green-700" : order!.status === "Cancelled" ? "bg-red-100 text-red-700" : "bg-app-orange/10 text-app-orange"
+          className={`px-4 py-1.5 text-sm font-semibold rounded-full ${order.status === "Delivered" ?
+            "bg-green-100 text-green-700" : order.status === "Cancelled" ? "bg-red-100 text-red-700" : "bg-app-orange/10 text-app-orange"
           }`}
           >
-             {order!.status}
+             {order.status}
           </span>
         </div>
         <div className="grid lg:grid-cols-3 gap-6">
@@ -101,20 +105,20 @@ const [liveLocation, setLiveLocation] = useState<{lat: number; lng: number} | nu
                     Delivery Address
                   </h3>
                   <p className="text-sm text-app-text-light leading-relaxed">
-                    {order?.shippingAddress.label}
+                    {order.shippingAddress.label}
                     <br/>
-                    {order?.shippingAddress.address}
+                    {order.shippingAddress.address}
                     <br/>
-                    {order?.shippingAddress.city},{order?.shippingAddress.state}
-                    {order?.shippingAddress.zip}
+                    {order.shippingAddress.city},{order.shippingAddress.state}
+                    {order.shippingAddress.zip}
                   </p>
               </div>
               {/* Items */}
               <div className="bg-white rounded-2xl p-5">
-                <h3 className="text-sm font-semibold text-app-green mb-3">Items ({order?.items.length})</h3>
+                <h3 className="text-sm font-semibold text-app-green mb-3">Items ({order.items.length})</h3>
 
                 <div className="space-y-3">
-                  {order?.items.map((item,i)=>(
+                  {order.items.map((item,i)=>(
                     <div key={i} className="flex items-center gap-3">
                       <img src={item.image} alt={item.name} className="size-10 rounded-lg object-cover"/>
                       <div className="flex-1 min-w-0">
@@ -130,18 +134,18 @@ const [liveLocation, setLiveLocation] = useState<{lat: number; lng: number} | nu
                 <div className="mt-4 pt-3 border-t border-app-border space-y-1.5 text-sm">
                   <div className="flex justify-between">
                     <span className="text-app-text-light">Subtotal</span>
-                    <span>  {currency}{order?.subtotal.toFixed(2)}</span>
+                    <span>  {currency}{order.subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-app-text-light">Delivery</span>
-                    <span>  {order?.deliveryFee === 0 ? "Free" : `${currency}${order?.deliveryFee.toFixed(2)}`}</span>
+                    <span>  {order.deliveryFee === 0 ? "Free" : `${currency}${order.deliveryFee.toFixed(2)}`}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-app-text-light">Tax</span>
-                    <span>  {currency}{order?.tax.toFixed(2)}</span>
+                    <span>  {currency}{order.tax.toFixed(2)}</span>
                   </div><div className="flex justify-between pt-2 border-t border-app-border font-semibold text-app-green">
                     <span >Total</span>
-                    <span>  {currency}{order?.total.toFixed(2)}</span>
+                    <span>  {currency}{order.total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

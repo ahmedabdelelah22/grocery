@@ -20,7 +20,7 @@ const MyOrders = () => {
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
-    const allOrders = dummyDashboardOrdersData as Order[];
+    const allOrders = dummyDashboardOrdersData as unknown as Order[];
     setOrders(allOrders);
     setLoading(false);
   }, []);
